@@ -14,6 +14,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+if (!process.env.MONGO_URI) {
+  console.error("FATAL ERROR: MONGO_URI is not defined.");
+  process.exit(1);
+}
+
 mongoose
   .connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 10000 })
   .then(() => {
@@ -125,9 +130,7 @@ app.get("/strings", async (req, res) => {
 
 app.get("/strings/filter-by-natural-language", async (req, res) => {
   try {
-    const natural_language = req._parsedUrl.query;
-    const query = natural_language.split("=")[1].replaceAll("%20", " ");
-    console.log(query);
+    const { q: query } = req.query;
 
     const filter = {};
     if (!query) {
