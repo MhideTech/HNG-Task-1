@@ -64,7 +64,7 @@ app.post("/strings", async (req, res) => {
       properties: {
         length: value.length,
         is_palindrome: value === value.split("").reverse().join(""),
-        unique_characters: [...new Set(value)].join(""),
+        unique_characters: new Set(value).size,
         word_count: value.split(" ").length,
         sha256_hash: hash,
         character_frequency_map: getCharacterFrequencyMap(value),
@@ -74,9 +74,14 @@ app.post("/strings", async (req, res) => {
     const newString = new Strings(stringProperties);
     await newString.save();
 
-    res.status(200).json(stringProperties);
+    res.status(201).json(stringProperties);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: "String already exists in the system" });
+    }
+    res.status(500).json({ error: "An internal server error occurred" });
   }
 });
 
@@ -133,7 +138,6 @@ app.get("/strings/filter-by-natural-language", async (req, res) => {
 });
 
 app.get("/strings/:string_value", async (req, res) => {
-  console.log(req.params.string_value);
   try {
     const string = await Strings.findOne({
       value: req.params.string_value,
@@ -180,15 +184,16 @@ app.get("/strings", async (req, res) => {
     }
 
     const strings = await Strings.find(filter);
+    const appliedFilters = {};
+    for (const key in req.query) {
+      if (req.query[key] !== undefined) {
+        appliedFilters[key] = req.query[key];
+      }
+    }
     res.status(200).json({
       data: strings,
-      filters_applied: {
-        is_palindrome,
-        min_length,
-        max_length,
-        word_count,
-        contains_character,
-      },
+      count: strings.length,
+      filters_applied: appliedFilters,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
