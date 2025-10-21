@@ -13,8 +13,8 @@ const stringModel = new mongoose.Schema({
     word_count: Number,
     sha256_hash: String,
     character_frequency_map: Object,
-    created_at: String,
   },
+  created_at: String,
 });
 
 export default mongoose.model("Strings", stringModel);

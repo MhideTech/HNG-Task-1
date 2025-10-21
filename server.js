@@ -68,8 +68,8 @@ app.post("/strings", async (req, res) => {
         word_count: value.split(" ").length,
         sha256_hash: hash,
         character_frequency_map: getCharacterFrequencyMap(value),
-        created_at: new Date().toISOString(),
       },
+      created_at: new Date().toISOString(),
     };
     const newString = new Strings(stringProperties);
     await newString.save();
@@ -82,7 +82,7 @@ app.post("/strings", async (req, res) => {
 
 app.get("/strings/filter-by-natural-language", async (req, res) => {
   try {
-    const { q: query } = req.query;
+    const { query } = req.query;
 
     const filter = {};
     if (!query) {
