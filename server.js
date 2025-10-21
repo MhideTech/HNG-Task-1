@@ -23,8 +23,11 @@ mongoose
   .connect(process.env.MONGO_URI, {
     serverSelectionTimeoutMS: 10000,
   })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .then(() => {
+    console.log("MongoDB Connected");
+    app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+  })
+  .catch((err) => console.error("FATAL: MongoDB connection error:", err));
 
 function generateSHA256Hash(value) {
   const hash = crypto.createHash("sha256");
@@ -208,10 +211,6 @@ app.delete("/strings/:string_value", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
 });
 
 export default app;
