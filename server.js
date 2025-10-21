@@ -77,56 +77,6 @@ app.post("/strings", async (req, res) => {
   }
 });
 
-app.get("/strings", async (req, res) => {
-  try {
-    const {
-      is_palindrome,
-      min_length,
-      max_length,
-      word_count,
-      contains_character,
-    } = req.query;
-
-    const filter = {};
-
-    if (is_palindrome !== undefined) {
-      filter["properties.is_palindrome"] = is_palindrome === "true";
-    }
-    if (min_length) {
-      filter["properties.length"] = {
-        ...(filter["properties.length"] || {}),
-        $gte: parseInt(min_length, 10),
-      };
-    }
-    if (max_length) {
-      filter["properties.length"] = {
-        ...(filter["properties.length"] || {}),
-        $lte: parseInt(max_length, 10),
-      };
-    }
-    if (word_count) {
-      filter["properties.word_count"] = parseInt(word_count, 10);
-    }
-    if (contains_character) {
-      filter.value = { $regex: contains_character, $options: "i" }; // Case-insensitive search
-    }
-
-    const strings = await Strings.find(filter);
-    res.status(200).json({
-      data: strings,
-      filters_applied: {
-        is_palindrome,
-        min_length,
-        max_length,
-        word_count,
-        contains_character,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 app.get("/strings/filter-by-natural-language", async (req, res) => {
   try {
     const { q: query } = req.query;
@@ -187,6 +137,56 @@ app.get("/strings/:string_value", async (req, res) => {
     });
     if (!string) return res.status(404).json({ error: "String not found" });
     res.status(200).json(string);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/strings", async (req, res) => {
+  try {
+    const {
+      is_palindrome,
+      min_length,
+      max_length,
+      word_count,
+      contains_character,
+    } = req.query;
+
+    const filter = {};
+
+    if (is_palindrome !== undefined) {
+      filter["properties.is_palindrome"] = is_palindrome === "true";
+    }
+    if (min_length) {
+      filter["properties.length"] = {
+        ...(filter["properties.length"] || {}),
+        $gte: parseInt(min_length, 10),
+      };
+    }
+    if (max_length) {
+      filter["properties.length"] = {
+        ...(filter["properties.length"] || {}),
+        $lte: parseInt(max_length, 10),
+      };
+    }
+    if (word_count) {
+      filter["properties.word_count"] = parseInt(word_count, 10);
+    }
+    if (contains_character) {
+      filter.value = { $regex: contains_character, $options: "i" }; // Case-insensitive search
+    }
+
+    const strings = await Strings.find(filter);
+    res.status(200).json({
+      data: strings,
+      filters_applied: {
+        is_palindrome,
+        min_length,
+        max_length,
+        word_count,
+        contains_character,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
