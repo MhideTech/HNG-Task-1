@@ -4,11 +4,11 @@ This is a Node.js and Express-based RESTful API that allows users to submit stri
 
 ## Features
 
--   Submit a string and get back its properties (length, palindrome status, word count, etc.).
--   Retrieve a list of all submitted strings.
--   Filter strings based on properties like length, word count, and palindrome status.
--   Perform a natural language search for specific types of strings.
--   Delete strings from the database.
+- Submit a string and get back its properties (length, palindrome status, word count, etc.).
+- Retrieve a list of all submitted strings.
+- Filter strings based on properties like length, word count, and palindrome status.
+- Perform a natural language search for specific types of strings.
+- Delete strings from the database.
 
 ## Setup and Installation
 
@@ -16,16 +16,16 @@ Follow these instructions to get the project set up and running on your local ma
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or later recommended)
--   [MongoDB](https://www.mongodb.com/try/download/community) (must be installed and running)
+- [Node.js](https://nodejs.org/) (v18 or later recommended)
+- [MongoDB](https://www.mongodb.com/try/download/community) (must be installed and running)
 
 ### 1. Clone the Repository
 
 First, clone this repository to your local machine.
 
 ```bash
-git clone <your-github-repo-link>
-cd <repository-folder-name>
+git clone "https://github.com/MhideTech/HNG-Task-1"
+cd "HNG-Task-1"
 ```
 
 ### 2. Install Dependencies
@@ -37,11 +37,12 @@ npm install
 ```
 
 This will install all dependencies listed in the `package.json` file, including:
--   `express`: Web framework for Node.js.
--   `mongoose`: Object Data Modeling (ODM) library for MongoDB.
--   `cors`: Middleware to enable Cross-Origin Resource Sharing.
--   `dotenv`: Module to load environment variables from a `.env` file.
--   `nodemon`: Utility that monitors for changes and automatically restarts the server (for development).
+
+- `express`: Web framework for Node.js.
+- `mongoose`: Object Data Modeling (ODM) library for MongoDB.
+- `cors`: Middleware to enable Cross-Origin Resource Sharing.
+- `dotenv`: Module to load environment variables from a `.env` file.
+- `nodemon`: Utility that monitors for changes and automatically restarts the server (for development).
 
 ### 3. Configure Environment Variables
 
